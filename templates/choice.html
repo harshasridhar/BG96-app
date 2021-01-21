@@ -1,0 +1,88 @@
+{% extends "index.html" %}
+
+{% block content %}
+	<style>
+* {
+  box-sizing: border-box;
+}
+
+.row {
+  display: flex;
+  min-height: 100%;
+  width: 100%;
+}
+
+/* Create two equal columns that sits next to each other */
+.column {
+  flex: 50%;
+  padding: 10px;
+  min-height: 100%;
+  height: 100%; /* Should be removed. Only for demonstration */
+}
+.loading {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.5);
+}
+.loading-wheel {
+    width: 20px;
+    height: 20px;
+    margin-top: -40px;
+    margin-left: -40px;
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    
+    border-width: 30px;
+    border-radius: 50%;
+    -webkit-animation: spin 1s linear infinite;
+}
+.style-2 .loading-wheel {
+    border-style: double;
+    border-color: #ccc transparent;
+}
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0);
+    }
+    100% {
+        -webkit-transform: rotate(-360deg);
+    }
+}
+</style>
+	<div class="row" >
+		<div class="column" style="background-color:#aaa; width: 100%">
+			<form action="" method="POST">
+				Select Port{{form.choice}}<br>
+				{{form.submit(style='color: green; font-weight: bold')}}
+				{% if form.isConnected %}
+				<h3>Connected to Port: {{form.choice.raw_data[0]}}</h3>
+				<form action="" method="POST">
+					<input type="text" hidden name="connection" id="connection" value="disconnect"/> 
+					<input type="submit" name="submit" id ="submit" value="Disconnect" style="color: red; font-weight: bold"/>
+				</form>
+				{% endif %}
+			</form>
+		</div>
+		<div class="column" style="background-color:#bbb;">
+			<textarea rows="20" cols="50" readonly style="width:100%: overflow-y: auto">{{form.outputText}}</textarea><br>
+			<form action="" method="POST">
+				<div style="visibility: hidden">
+					{{ form.choice }}
+					{% if form.isConnected %}
+					{% endif %}
+				</div>
+				{{form.command}} {{form.execute}}
+			</form>
+		</div>
+	</div>
+	{% if form.isConnecting%}
+	<div class="loading style-2"><div class="loading-wheel"></div></div>
+	{% endif %}
+{% endblock %}

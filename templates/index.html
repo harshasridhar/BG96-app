@@ -1,0 +1,18 @@
+<html>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      {% if title %}
+      <title>{{ title }} - BG96</title>
+      {% else %}
+      <title>Welcome</title>
+      {% endif %}
+    </head>
+    <body>
+        <div>
+		BG96
+		<a href="/choice">Choose Serial Port</a>
+	</div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>
